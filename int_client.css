@@ -83,6 +83,14 @@ h2 {
     box-shadow: 0 2px 8px #ddd;
     background-color: white;
 }
+.zone-quantite {
+    display: none;
+    margin-top: 10px;
+}
+
+.zone-quantite.visible {
+    display: block;
+}
 
 .card img {
     width: 100%;
