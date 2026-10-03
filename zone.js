@@ -88,7 +88,7 @@ btnValider.addEventListener('click', function() {
         articles: panier
     };
 
-    fetch('https://jcn5jojrxb.preview.c40.airoapp.ai/commande', {
+    fetch('https://zeduc-backend.bonto.run/commande', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(commande)
