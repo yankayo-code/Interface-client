@@ -68,11 +68,44 @@ function afficherPanier() {
 
 const btnValider = document.getElementById('btn-valider');
 
+
 btnValider.addEventListener('click', function() {
     if (panier.length === 0) {
         alert('Votre panier est vide. Ajoutez au moins un plat avant de valider.');
         return;
     }
 
-    console.log('Commande à valider :', panier);
+    const nomClient = localStorage.getItem('nomClient');
+    const telephoneClient = localStorage.getItem('telephoneClient');
+    const residenceClient = localStorage.getItem('residenceClient');
+
+    const commande = {
+        client: {
+            nom: nomClient,
+            telephone: telephoneClient,
+            residence: residenceClient
+        },
+        articles: panier
+    };
+
+    fetch('https://jcn5jojrxb.preview.c40.airoapp.ai/commande', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(commande)
+    })
+    .then(function(response) {
+    return response.text();
+    })
+    .then(function(data) {
+    console.log('Réponse du serveur :', data);
+
+    alert('Merci ' + nomClient + ' ! Votre commande a bien été reçue. Le restaurant vous contactera bientôt.');
+
+    panier = [];
+    afficherPanier();
+    })
+    .catch(function(erreur) {
+    console.log('Erreur lors de l\'envoi :', erreur);
+    alert('Une erreur est survenue, merci de réessayer.');
+});
 });

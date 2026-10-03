@@ -1,4 +1,6 @@
 
+
+                            /*---SECTION CLIENT CSS---*/
 .selection{
     width:100%;
     height: auto;
@@ -121,3 +123,72 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+
+body.page-accueil {
+    background-image: url('https://github.com/yankayo-code/Interface-client/blob/main/logo_Zeduc.jpeg?raw=true');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+                            /* SECTION ACCEUIL CSS */
+
+.accueil {
+    max-width: 400px;
+    margin: 80px auto;
+    background-color: #1d5c3a;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #ddd;
+    text-align: center;
+}
+
+.accueil h1 {
+    color: #f0b429;
+    margin-bottom: 10px;
+}
+
+.accueil p {
+    color: white;
+    margin-bottom: 25px;
+}
+
+.accueil form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.accueil input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.accueil input:focus {
+    outline: none;
+    border-color: #f0b429;
+}
+
+.accueil button {
+    width: 100%;
+    padding: 12px;
+    background-color: white;
+    color: #1d5c3a;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.accueil button:hover {
+    background-color: #f0b429;
+    color: white;
+}
+
