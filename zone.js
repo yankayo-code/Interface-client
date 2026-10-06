@@ -1,3 +1,20 @@
+fetch('https://zeduc-backend.bonto.run/plats')
+    .then(function(response) { return response.json(); })
+    .then(function(plats) {
+        const menu = document.querySelector('.menu');
+        plats.forEach(function(plat) {
+            const carte = document.createElement('article');
+            carte.className = 'card selection';
+            if (!plat.disponible) carte.classList.add('indisponible');
+            carte.innerHTML = '<img src="' + plat.image + '" alt="' + plat.nom + '">' +
+                '<h3>' + plat.nom + '</h3>' +
+                '<strong>' + plat.prix + ' FCFA</strong>' +
+                '<div class="zone-quantite"><input type="number" class="input-quantite" value="1" min="1"><button class="btn-ajouter">Ajouter</button></div>';
+            menu.appendChild(carte);
+        });
+        activerCartes(); // on enveloppe ton code existant dans cette fonction
+    });
+
 let panier = [];
 
 const cartes = document.querySelectorAll('.selection');

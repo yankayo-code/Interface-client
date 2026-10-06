@@ -203,3 +203,5 @@ body.page-accueil {
 #input-residence-client {
     display: none;
 }
+
+.card.indisponible .btn-ajouter { opacity: 0.5; pointer-events: none; }
