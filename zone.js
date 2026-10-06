@@ -78,12 +78,15 @@ btnValider.addEventListener('click', function() {
     const nomClient = localStorage.getItem('nomClient');
     const telephoneClient = localStorage.getItem('telephoneClient');
     const residenceClient = localStorage.getItem('residenceClient');
+    const modeReception = localStorage.getItem('modeReception');
+
 
     const commande = {
         client: {
             nom: nomClient,
             telephone: telephoneClient,
-            residence: residenceClient
+            residence: residenceClient,
+            modeReception: modeReception
         },
         articles: panier
     };

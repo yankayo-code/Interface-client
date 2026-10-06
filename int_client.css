@@ -199,3 +199,7 @@ body.page-accueil {
     color: white;
     margin: 10px 0;
 }
+
+#input-residence-client {
+    display: none;
+}
