@@ -3,16 +3,20 @@ const formAccueil = document.getElementById('form-accueil');
 const boutonsMode = document.querySelectorAll('input[name="mode-reception"]');
 const champResidence = document.getElementById('input-residence-client');
 
+function mettreAJourChampResidence() {
+    const modeActuel = document.querySelector('input[name="mode-reception"]:checked').value;
+
+    if (modeActuel === 'livraison') {
+        champResidence.style.display = 'block';
+        champResidence.required = true;
+    } else {
+        champResidence.style.display = 'none';
+        champResidence.required = false;
+    }
+}
+
 boutonsMode.forEach(function(bouton) {
-    bouton.addEventListener('change', function() {
-        if (bouton.value === 'livraison' && bouton.checked) {
-            champResidence.style.display = 'block';
-            champResidence.required = true;
-        } else if (bouton.checked) {
-            champResidence.style.display = 'none';
-            champResidence.required = false;
-        }
-    });
+    bouton.addEventListener('change', mettreAJourChampResidence);
 });
 
 formAccueil.addEventListener('submit', function(event) {
