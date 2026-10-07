@@ -1,64 +1,62 @@
+let panier = [];
+
 fetch('https://zeduc-backend.bonto.run/plats')
     .then(function(response) { return response.json(); })
     .then(function(plats) {
         const menu = document.querySelector('.menu');
-        plats.forEach(function(plat) {
+
+        const platsDisponibles = plats.filter(function(plat) {
+            return plat.disponible;
+        });
+
+        platsDisponibles.forEach(function(plat) {
             const carte = document.createElement('article');
             carte.className = 'card selection';
-            if (!plat.disponible) carte.classList.add('indisponible');
             carte.innerHTML = '<img src="' + plat.image + '" alt="' + plat.nom + '">' +
                 '<h3>' + plat.nom + '</h3>' +
                 '<strong>' + plat.prix + ' FCFA</strong>' +
                 '<div class="zone-quantite"><input type="number" class="input-quantite" value="1" min="1"><button class="btn-ajouter">Ajouter</button></div>';
             menu.appendChild(carte);
         });
-        activerCartes(); // on enveloppe ton code existant dans cette fonction
+
+        activerCartes();
     });
 
-let panier = [];
+function activerCartes() {
+    const cartes = document.querySelectorAll('.selection');
 
-const cartes = document.querySelectorAll('.selection');
+    cartes.forEach(function(carte) {
 
-cartes.forEach(function(carte) {
+        const zoneQuantite = carte.querySelector('.zone-quantite');
 
-    const zoneQuantite = carte.querySelector('.zone-quantite');
+        carte.addEventListener('click', function() {
+            zoneQuantite.classList.toggle('visible');
+        });
 
-    // Clic sur la carte entière → afficher/cacher la zone
-    carte.addEventListener('click', function() {
-        zoneQuantite.classList.toggle('visible');
+        zoneQuantite.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+
+        const btnAjouter = carte.querySelector('.btn-ajouter');
+        btnAjouter.addEventListener('click', function() {
+            const nomPlat = carte.querySelector('h3').textContent;
+            const prixTexte = carte.querySelector('strong').textContent;
+            const prixNombre = parseInt(prixTexte.replace(/\D/g, ''));
+            const quantite = parseInt(carte.querySelector('.input-quantite').value);
+
+            const article = {
+                nom: nomPlat,
+                prix: prixNombre,
+                quantite: quantite
+            };
+
+            panier.push(article);
+            afficherPanier();
+            zoneQuantite.classList.remove('visible');
+        });
+
     });
-
-    // Clic sur la zone de quantité elle-même → ne pas faire remonter le clic à la carte
-    zoneQuantite.addEventListener('click', function(event) {
-        event.stopPropagation();
-    });
-
-    // Clic sur le bouton "Ajouter" spécifiquement
-    const btnAjouter = carte.querySelector('.btn-ajouter');
-    btnAjouter.addEventListener('click', function() {
-        const nomPlat = carte.querySelector('h3').textContent;
-        const prixTexte = carte.querySelector('strong').textContent;
-        const prixNombre = parseInt(prixTexte.replace(/\D/g, ''));
-        const quantite = parseInt(carte.querySelector('.input-quantite').value);
-
-        const article = {
-            nom: nomPlat,
-            prix: prixNombre,
-            quantite: quantite
-        };
-
-        panier.push(article);
-
-        afficherPanier();
-
-        console.log(panier);
-
-        zoneQuantite.classList.remove('visible');
-    });
-
-});
-
-
+}
 
 function afficherPanier() {
     const titrePanier = document.getElementById('titre-panier');
@@ -85,7 +83,6 @@ function afficherPanier() {
 
 const btnValider = document.getElementById('btn-valider');
 
-
 btnValider.addEventListener('click', function() {
     if (panier.length === 0) {
         alert('Votre panier est vide. Ajoutez au moins un plat avant de valider.');
@@ -96,7 +93,6 @@ btnValider.addEventListener('click', function() {
     const telephoneClient = localStorage.getItem('telephoneClient');
     const residenceClient = localStorage.getItem('residenceClient');
     const modeReception = localStorage.getItem('modeReception');
-
 
     const commande = {
         client: {
@@ -109,23 +105,19 @@ btnValider.addEventListener('click', function() {
     };
 
     fetch('https://zeduc-backend.bonto.run/commande', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(commande)
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(commande)
     })
     .then(function(response) {
-    return response.text();
+        return response.text();
     })
     .then(function(data) {
-    console.log('Réponse du serveur :', data);
-
-    alert('Merci ' + nomClient + ' ! Votre commande a bien été reçue. Le restaurant vous contactera bientôt.');
-
-    panier = [];
-    afficherPanier();
+        alert('Merci ' + nomClient + ' ! Votre commande a bien été reçue. Le restaurant vous contactera bientôt.');
+        panier = [];
+        afficherPanier();
     })
     .catch(function(erreur) {
-    console.log('Erreur lors de l\'envoi :', erreur);
-    alert('Une erreur est survenue, merci de réessayer.');
-});
+        alert('Une erreur est survenue, merci de réessayer.');
+    });
 });
