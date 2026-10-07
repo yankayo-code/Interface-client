@@ -104,7 +104,7 @@ btnValider.addEventListener('click', function() {
         articles: panier
     };
 
-    fetch('https://zeduc-backend.bonto.run/commande', {
+        fetch('https://zeduc-backend.bonto.run/commande', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(commande)
