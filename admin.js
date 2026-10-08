@@ -61,3 +61,7 @@ function chargerPlats(tentative) {
             }
         });
 }
+
+document.getElementById('btn-voir-menu').addEventListener('click', function() {
+    window.open('menu.html', '_blank');
+});

@@ -1,8 +1,10 @@
 let panier = [];
 
-function chargerMenu(tentative) {
+let panier = [];
+
+function chargerMenu(tentative, silencieux) {
     const menu = document.querySelector('.menu');
-    if (tentative === 1) {
+    if (tentative === 1 && !silencieux) {
         menu.innerHTML = '<p>Chargement du menu, merci de patienter...</p>';
     }
 
@@ -28,6 +30,9 @@ function chargerMenu(tentative) {
             activerCartes();
         })
         .catch(function() {
+            if (silencieux) {
+                return;
+            }
             if (tentative < 5) {
                 setTimeout(function() { chargerMenu(tentative + 1); }, 4000);
             } else {
@@ -37,6 +42,13 @@ function chargerMenu(tentative) {
 }
 
 chargerMenu(1);
+
+setInterval(function() {
+    const zoneOuverte = document.querySelector('.zone-quantite.visible');
+    if (!document.hidden && !zoneOuverte) {
+        chargerMenu(1, true);
+    }
+}, 60000);
 
 function activerCartes() {
     const cartes = document.querySelectorAll('.selection');
