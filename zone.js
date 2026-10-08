@@ -1,26 +1,42 @@
 let panier = [];
 
-fetch('https://zeduc-backend.bonto.run/plats')
-    .then(function(response) { return response.json(); })
-    .then(function(plats) {
-        const menu = document.querySelector('.menu');
+function chargerMenu(tentative) {
+    const menu = document.querySelector('.menu');
+    if (tentative === 1) {
+        menu.innerHTML = '<p>Chargement du menu, merci de patienter...</p>';
+    }
 
-        const platsDisponibles = plats.filter(function(plat) {
-            return plat.disponible;
+    fetch('https://zeduc-backend.bonto.run/plats')
+        .then(function(response) { return response.json(); })
+        .then(function(plats) {
+            menu.innerHTML = '';
+
+            const platsDisponibles = plats.filter(function(plat) {
+                return plat.disponible;
+            });
+
+            platsDisponibles.forEach(function(plat) {
+                const carte = document.createElement('article');
+                carte.className = 'card selection';
+                carte.innerHTML = '<img src="' + plat.image + '" alt="' + plat.nom + '">' +
+                    '<h3>' + plat.nom + '</h3>' +
+                    '<strong>' + plat.prix + ' FCFA</strong>' +
+                    '<div class="zone-quantite"><input type="number" class="input-quantite" value="1" min="1"><button class="btn-ajouter">Ajouter</button></div>';
+                menu.appendChild(carte);
+            });
+
+            activerCartes();
+        })
+        .catch(function() {
+            if (tentative < 5) {
+                setTimeout(function() { chargerMenu(tentative + 1); }, 4000);
+            } else {
+                menu.innerHTML = '<p>Impossible de charger le menu. Rechargez la page dans un instant.</p>';
+            }
         });
+}
 
-        platsDisponibles.forEach(function(plat) {
-            const carte = document.createElement('article');
-            carte.className = 'card selection';
-            carte.innerHTML = '<img src="' + plat.image + '" alt="' + plat.nom + '">' +
-                '<h3>' + plat.nom + '</h3>' +
-                '<strong>' + plat.prix + ' FCFA</strong>' +
-                '<div class="zone-quantite"><input type="number" class="input-quantite" value="1" min="1"><button class="btn-ajouter">Ajouter</button></div>';
-            menu.appendChild(carte);
-        });
-
-        activerCartes();
-    });
+chargerMenu(1);
 
 function activerCartes() {
     const cartes = document.querySelectorAll('.selection');

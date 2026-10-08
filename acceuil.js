@@ -1,3 +1,4 @@
+fetch('https://zeduc-backend.bonto.run/').catch(function() {});
 const formAccueil = document.getElementById('form-accueil');
 
 const boutonsMode = document.querySelectorAll('input[name="mode-reception"]');
