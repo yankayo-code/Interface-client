@@ -1,7 +1,5 @@
 let panier = [];
 
-let panier = [];
-
 function chargerMenu(tentative, silencieux) {
     const menu = document.querySelector('.menu');
     if (tentative === 1 && !silencieux) {
