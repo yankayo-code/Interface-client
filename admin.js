@@ -1,3 +1,5 @@
+fetch('https://zeduc-backend.bonto.run/').catch(function() {});
+
 const MOT_DE_PASSE_ADMIN = 'junior59';
 
 const btnConnexion = document.getElementById('btn-connexion');
@@ -14,11 +16,17 @@ btnConnexion.addEventListener('click', function() {
     }
 });
 
-function chargerPlats() {
+function chargerPlats(tentative) {
+    tentative = tentative || 1;
+    const liste = document.getElementById('liste-plats-admin');
+
+    if (tentative === 1) {
+        liste.innerHTML = '<p>Chargement des plats, merci de patienter...</p>';
+    }
+
     fetch('https://zeduc-backend.bonto.run/plats')
         .then(function(response) { return response.json(); })
         .then(function(plats) {
-            const liste = document.getElementById('liste-plats-admin');
             liste.innerHTML = '';
 
             plats.forEach(function(plat) {
@@ -37,8 +45,19 @@ function chargerPlats() {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ disponible: disponible })
+                    })
+                    .catch(function() {
+                        alert('La modification n\'a pas été enregistrée, réessaie.');
+                        checkbox.checked = !disponible;
                     });
                 });
             });
+        })
+        .catch(function() {
+            if (tentative < 5) {
+                setTimeout(function() { chargerPlats(tentative + 1); }, 4000);
+            } else {
+                liste.innerHTML = '<p>Impossible de charger les plats. Recharge la page dans un instant.</p>';
+            }
         });
 }
